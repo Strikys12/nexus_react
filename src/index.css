@@ -1,14 +1,15 @@
 * {
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
-  font-family: "Segoe UI", sans-serif;
+  box-sizing: border-box; /* Fundamental para que los paddings no agranden los divs */
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* O la fuente que uses */
 }
 
 body, html {
+  width: 100%;
   height: 100%;
+  overflow-x: hidden; /* Evita scrolls raros */
 }
-
 .fondo {
   background: radial-gradient(#0f2a43, #000);
   background-image: url('/src/assets/Imagenes/Fondo Página.jpeg');
