@@ -3,34 +3,27 @@ import { Link, useNavigate } from "react-router-dom";
 import { apiFetch, endpoints } from "../services/api";
 import { successAlert, errorAlert } from "../helpers/alerts";
 
+import "../layouts/login.css";// Asegúrate de que el archivo se llame exactamente así
+
 export default function Login() {
-
   const navigate = useNavigate();
-
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     try {
-      // 1. Hacemos GET para traer todos los usuarios
-      const usuarios = await apiFetch(endpoints.login, {
-        method: "GET",
+
+      await apiFetch(endpoints.login, {
+        method: "POST",
+        body: JSON.stringify({ email, password }),
       });
 
-      // 2. Validamos si los datos del formulario existen en la lista de la DB
-      const usuarioValido = usuarios.find(
-        (u) => u.email === email && u.password === password
-      );
+      localStorage.setItem("token", "fake-token");
 
-      if (usuarioValido) {
-        localStorage.setItem("token", "fake-token");
-        successAlert("Login exitoso");
-        navigate("/services");
-      } else {
-        errorAlert("Credenciales incorrectas");
-      }
+      successAlert("Login exitoso");
+
+      navigate("/services");
 
     } catch (error) {
       errorAlert("No se pudo conectar con el servidor");
@@ -38,31 +31,46 @@ export default function Login() {
   };
 
   return (
-    <div>
-      <h2>Login</h2>
+    <div className="fondo"> {/* Mapea con .fondo del CSS */}
+      <div className="contenedor-login"> {/* Mapea con .contenedor-login */}
 
-      <form onSubmit={handleSubmit}>
-        <input
-          type="email"
-          placeholder="Correo"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
+        <div className="encabezado"> {/* Mapea con .encabezado */}
+          <div className="logo">NEXUS</div>
+          <h2>Bienvenido</h2>
+          <p>Ingresa tus credenciales para continuar</p>
+        </div>
 
-        <input
-          type="password"
-          placeholder="Contraseña"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
+        <form onSubmit={handleSubmit}>
+          <label>Correo Electrónico</label>
+          <input
+            type="email"
+            placeholder="ejemplo@correo.com"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
 
-        <button type="submit">Ingresar</button>
-      </form>
+          <label>Contraseña</label>
+          <input
+            type="password"
+            placeholder="••••••••"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
 
-      <p>
-        ¿No tienes cuenta?
-        <Link to="/register"> Regístrate aquí</Link>
-      </p>
+          <div className="botones"> {/* Mapea con .botones */}
+            <button type="submit">Ingresar</button>
+          </div>
+        </form>
+
+        <footer>
+          <p>
+            ¿No tienes cuenta?
+            <Link to="/register" style={{ color: '#0b1f3a', fontWeight: 'bold' }}> Regístrate aquí</Link>
+          </p>
+        </footer>
+      </div>
     </div>
   );
 }
