@@ -14,20 +14,26 @@ export default function Login() {
     e.preventDefault();
 
     try {
-
-      await apiFetch(endpoints.login, {
-        method: "POST",
-        body: JSON.stringify({ email, password }),
+      // 1. Hacemos GET para traer todos los usuarios
+      const usuarios = await apiFetch(endpoints.login, {
+        method: "GET",
       });
 
-      localStorage.setItem("token", "fake-token");
+      // 2. Validamos si los datos del formulario existen en la lista de la DB
+      const usuarioValido = usuarios.find(
+        (u) => u.email === email && u.password === password
+      );
 
-      successAlert("Login exitoso");
-
-      navigate("/services");
+      if (usuarioValido) {
+        localStorage.setItem("token", "fake-token");
+        successAlert("Login exitoso");
+        navigate("/services");
+      } else {
+        errorAlert("Credenciales incorrectas");
+      }
 
     } catch (error) {
-      errorAlert("Credenciales inválidas");
+      errorAlert("No se pudo conectar con el servidor");
     }
   };
 
