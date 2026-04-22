@@ -18,7 +18,7 @@ export default function Login() {
         body: JSON.stringify({ email, password }),
       });
       localStorage.setItem("token", "fake-token");
-      successAlert("Login exitoso");
+      successAlert("Login exitoso!!");
       navigate("/services");
     } catch (error) {
       errorAlert("Credenciales inválidas");
