@@ -4,7 +4,7 @@ export default function Footer() {
       <div className="footer-content">
         <div className="footer-item">
           <span className="icon">📞</span>
-          <span>Medellín, Área Administrativa: (604) 000 000</span>
+          <span>Medellín, Área Administrativa: (604) 100 000</span>
         </div>
         <div className="footer-item">
           <span className="icon">✉️</span>

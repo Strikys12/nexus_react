@@ -12,7 +12,7 @@ export default function Home() {
         <div className="hero-content">
           <h1 className="hero-title">¡Es hora de inscribirte!</h1>
           <h2 className="highlight-text">Tu futuro comienza hoy</h2>
-          <p className="hero-subtitle">Programas de primera calidad</p>
+          <p className="hero-subtitle">Programas líderes en calidad</p>
           <button className="btn-programa" onClick={() => navigate("/services")}>
             Nuestros Programas
           </button>
