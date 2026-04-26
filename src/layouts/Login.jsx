@@ -1,62 +1,82 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { apiFetch, endpoints } from "../services/api";
-import { successAlert, errorAlert } from "../helpers/alerts";
+import { useNavigate } from "react-router-dom";
+
+const estudiantes = [
+  { usuario: "estudiante1", clave: "1234" },
+  { usuario: "estudiante2", clave: "abcd" },
+];
+
+const administrativos = [
+  { usuario: "admin1", clave: "adminpass" },
+  { usuario: "admin2", clave: "clave456" },
+];
 
 export default function Login() {
-
   const navigate = useNavigate();
+  const [rol, setRol] = useState("estudiante");
+  const [usuario, setUsuario] = useState("");
+  const [clave, setClave] = useState("");
 
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-
-  const handleSubmit = async (e) => {
+  const handleLogin = (e) => {
     e.preventDefault();
+    const lista = rol === "estudiante" ? estudiantes : administrativos;
+    const valido = lista.some((u) => u.usuario === usuario && u.clave === clave);
 
-    try {
-
-      await apiFetch(endpoints.login, {
-        method: "POST",
-        body: JSON.stringify({ email, password }),
-      });
-
-      localStorage.setItem("token", "fake-token");
-
-      successAlert("Login exitoso");
-
-      navigate("/services");
-
-    } catch (error) {
-      errorAlert("Credenciales inválidas");
+    if (valido) {
+      alert(`✅ Bienvenido, ${rol === "estudiante" ? "Estudiante" : "Personal Administrativo"}!`);
+      navigate(rol === "estudiante" ? "/preseleccion" : "/admin");
+    } else {
+      alert("❌ Usuario o contraseña incorrectos.");
     }
   };
 
   return (
-    <div>
-      <h2>Login</h2>
+    <div className="fondo">
+      <div className={`contenedor-login ${rol}`}>
+        <div className="encabezado">
+          <span className="logo-text">🛡 NEXUS</span>
+          <h2>Portal de Admisiones</h2>
+          <p>Bienvenido al sistema de acceso universitario</p>
+        </div>
 
-      <form onSubmit={handleSubmit}>
-        <input
-          type="email"
-          placeholder="Correo"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
+        <div className="selector">
+          <button
+            className={rol === "estudiante" ? "activo" : ""}
+            onClick={() => setRol("estudiante")}
+          >
+            Estudiante
+          </button>
+          <button
+            className={rol === "administrativo" ? "activo" : ""}
+            onClick={() => setRol("administrativo")}
+          >
+            Personal Administrativo
+          </button>
+        </div>
 
-        <input
-          type="password"
-          placeholder="Contraseña"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
+        <div className="form-login">
+          <label>Usuario</label>
+          <input
+            type="text"
+            placeholder={rol === "estudiante" ? "Ingrese su nombre de usuario" : "Ingrese su ID administrativo"}
+            value={usuario}
+            onChange={(e) => setUsuario(e.target.value)}
+          />
+          <label>Contraseña</label>
+          <input
+            type="password"
+            placeholder={rol === "estudiante" ? "Ingrese su contraseña" : "Ingrese su clave institucional"}
+            value={clave}
+            onChange={(e) => setClave(e.target.value)}
+          />
+          <div className="botones">
+            <button onClick={handleLogin}>Ingresar</button>
+            <button onClick={() => navigate("/register")}>Crear cuenta</button>
+          </div>
+        </div>
 
-        <button type="submit">Ingresar</button>
-      </form>
-
-      <p>
-        ¿No tienes cuenta?
-        <Link to="/register"> Regístrate aquí</Link>
-      </p>
+        <p className="footer-login">© 2025 Nexus Todos los derechos reservados</p>
+      </div>
     </div>
   );
 }
