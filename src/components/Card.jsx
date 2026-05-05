@@ -1,9 +1,8 @@
-function Card() {
-    return (
-        <a>
-            <p>Titulo del curso</p>
-            <span>Duración del curso</span>
-        </a>
-    );
+export default function Card({ nombre, semestres, color }) {
+  return (
+    <div className={`program ${color}`}>
+      <p>{nombre}</p>
+      <span>{semestres}</span>
+    </div>
+  );
 }
-export default Card;

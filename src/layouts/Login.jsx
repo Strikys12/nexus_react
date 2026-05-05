@@ -1,7 +1,5 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { apiFetch, endpoints } from "../services/api";
-import { successAlert, errorAlert } from "../helpers/alerts";
+import { useNavigate } from "react-router-dom";
 
 import "../layouts/login.css";// Asegúrate de que el archivo se llame exactamente así
 
@@ -10,7 +8,7 @@ export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleSubmit = async (e) => {
+  const handleLogin = (e) => {
     e.preventDefault();
     try {
 
